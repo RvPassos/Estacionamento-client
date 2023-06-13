@@ -15,5 +15,51 @@ export class CondutorCliente {
         });
     }
 
+    public async findById(id : number) : Promise<Condutor> {
+        try {
+            return (await this.axiosClient.get<Condutor>(`/${id}`)).data
+        } catch (error : any) {
+            return Promise.reject(error.response)
+        }
+    }
+
+    public async cadastrar(condutor : Condutor) : Promise<void> {
+        try {
+            return (await this.axiosClient.post('/', condutor))
+        } catch (error : any) {
+            return Promise.reject(error.response)
+        }
+
+    }
+
+    public async editar(condutor : Condutor) : Promise<void> {
+        try {
+            return (await this.axiosClient.put(`/${condutor.id}`, condutor)).data
+        } catch (error : any) {
+            return Promise.reject(error.response)
+        }
+    }
+
+    public async deletar(condutor : Condutor) : Promise<void> {
+        try {
+            return (await this.axiosClient.delete(`/${condutor.id}`)).data
+        } catch (error : any) {
+            return Promise.reject(error.response)
+        }
+    }
+
+    public async findByFiltrosPaginado(pageRequest : PageRequest) : Promise<PageResponse<Condutor>> {
+        try {
+            let requestPath = ''
+
+            requestPath += `?page=${pageRequest.currentPage}`
+            requestPath += `&size=${pageRequest.pageSize}`
+            requestPath += `&sort=${pageRequest.sortField === undefined ? '' : pageRequest.sortField}, ${pageRequest.direction}`
+            
+            return (await this.axiosClient.get<PageResponse<Condutor>>(requestPath, {params : {filtros : pageRequest.filter } })).data
+        } catch (error : any) {
+            return Promise.reject(error.response)
+        }
     
+    } 
 }
