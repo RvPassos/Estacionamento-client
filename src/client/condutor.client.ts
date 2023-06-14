@@ -6,11 +6,11 @@ import { PageResponse } from "@/model/page/page-response";
 
 export class CondutorCliente {
 
-    private axiosClient: AxiosInstance;
+    private axiosClient : AxiosInstance;
 
     constructor(){
         this.axiosClient = axios.create({
-            baseURL: 'http://localhost:8080/api/estacionamento',
+            baseURL: 'http://localhost:8080/api/condutor',
             headers: {'Content-type' : 'application/json'}
         });
     }
