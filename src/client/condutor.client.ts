@@ -23,6 +23,22 @@ export class CondutorCliente {
         }
     }
 
+    public async listAll() : Promise<Condutor[]> {
+        try {
+            return (await this.axiosClient.get<Condutor[]>(`/lista`)).data
+        } catch (error : any) {
+            return Promise.reject(error.response)
+        }
+    }
+
+    public async findByAtivo() : Promise<Condutor[]> {
+        try {
+            return (await this.axiosClient.get<Condutor[]>(`/ativo`)).data
+        } catch (error : any) {
+            return Promise.reject(error.response)
+        }
+    }
+
     public async cadastrar(condutor : Condutor) : Promise<void> {
         try {
             return (await this.axiosClient.post('/', condutor))
@@ -40,7 +56,7 @@ export class CondutorCliente {
         }
     }
 
-    public async deletar(condutor : Condutor) : Promise<void> {
+    public async deletar(condutor : Condutor) : Promise<string> {
         try {
             return (await this.axiosClient.delete(`/${condutor.id}`)).data
         } catch (error : any) {
