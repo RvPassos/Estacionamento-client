@@ -4,7 +4,7 @@ import { Condutor } from "@/model/condutor";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
 
-export class CondutorCliente {
+export class CondutorClient {
 
     private axiosClient : AxiosInstance;
 
