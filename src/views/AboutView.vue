@@ -1,5 +1,9 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-md-12">
+        <label class=""></label>
+      </div>
+    </div>
   </div>
 </template>
