@@ -27,7 +27,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #000000;
+  color: #bebebe;
 }
 
 li {
@@ -49,10 +49,11 @@ li {
 }
 
 .nav-bar-color{
-  background-color: #9c44dc;
+  background-color: #007cb6;
 }
 
-.body{
+body{
+  background-color: #2e2e2e;
   margin: 0px;
   padding: 0px;
 }
