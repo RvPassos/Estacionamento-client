@@ -5,7 +5,7 @@ import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
 import { Movimentacao } from "@/model/movimentacao";
 
-export class VeiculoClient {
+class VeiculoClient {
 
     private axiosClient : AxiosInstance;
 
@@ -40,25 +40,25 @@ export class VeiculoClient {
         }
     }
 
-    public async cadastrar(veiculo : Veiculo) : Promise<void> {
+    public async cadastrar(veiculo : Veiculo) : Promise<string> {
         try {
-            return (await this.axiosClient.post('/', veiculo))
+            return (await this.axiosClient.post<string>('', veiculo)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
     }
 
-    public async editar(veiculo : Veiculo) : Promise<void> {
+    public async editar(id : number, veiculo : Veiculo) : Promise<string> {
         try {
-            return (await this.axiosClient.put(`/${veiculo.id}`, veiculo)).data
+            return (await this.axiosClient.put<string>(`/${id}`, veiculo)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
     }
 
-    public async deletar(veiculo : Veiculo) : Promise<string> {
+    public async deletar(id : number) : Promise<string> {
         try {
-            return (await this.axiosClient.delete(`/${veiculo.id}`)).data
+            return (await this.axiosClient.delete(`/${id}`)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
@@ -78,3 +78,5 @@ export class VeiculoClient {
         }
     }
 }
+
+export default new VeiculoClient();

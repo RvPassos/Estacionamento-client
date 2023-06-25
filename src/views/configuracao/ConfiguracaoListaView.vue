@@ -1,48 +1,43 @@
 <template>
-    <div class="container">
-        <h2 class="mt-3">Listar Configurações</h2>
-        <div class="mt-5">
-            <div class="container text-end">
-                <router-link to="/forms-configuracao">
-                    <button class="btn btn-primary" type="button">Cadastrar</button>
-                </router-link>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-10 text-start">
+                <h2 class="fs-3">Listar Configurações</h2>
             </div>
-            <div class="container text-center">
+            <div class="col-md-2 d-grid gap-2">
+                <router-link to="/configuracao/formulario" type="button" class="btn btn-primary">Cadastrar</router-link>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <table class="table table-sm table-dark mt-4">
                     <thead>
                         <tr class="text-menor">
-                            <th>#</th>
-                            <th>Ativo</th>
-                            <th>Valor Hora</th>
-                            <th>Valor Minuto Multa</th>
-                            <th>Inicio Expediente</th>
-                            <th>Fim Expediente</th>
-                            <th>Tempo Para Desconto</th>
-                            <th>Tempo De Desconto</th>
-                            <th>Gerar Desconto</th>
-                            <th>Vagas Moto</th>
-                            <th>Vagas Carro</th>
-                            <th>Vagas Van</th>
-                            <th>Ações</th>
+                            <th scope="col">#</th>
+                            <th scope="col">Ativo</th>
+                            <th scope="col">Valor Hora</th>
+                            <th scope="col">Tempo Para Desconto</th>
+                            <th scope="col">Tempo De Desconto</th>
+                            <th scope="col">Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>true</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>00:00:00</td>
-                            <td>00:00:00</td>
-                            <td>00:00:00</td>
-                            <td>00:00:00</td>
-                            <td>sim</td>
-                            <td>20</td>
-                            <td>5</td>
-                            <td>10</td>
-                            <th class="d-flex align-items-center justify-content-center gap-2">
-                                <button class="btn btn-outline-danger "><i class="bi bi-trash-fill"></i></button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-pencil-fill "></i></button>
+                    <tbody class="table-group-divider">
+                        <tr v-for="item in configuracaoList" :key="item.id">
+                            <th>{{ item.id }}</th>
+                            <th>
+                                <span v-if="item.ativo" class="badge text-bg-success"> Ativo </span>
+                                <span v-if="!item.ativo" class="badge text-bg-danger"> Inativo </span>
+                            </th>
+                            <th>{{ item.valorHora }}</th>
+                            <th>{{ item.tempoParaDesconto }}</th>
+                            <th>{{ item.tempoDeDesconto }}</th>
+                            <th class="col-md-2">
+                                <div>
+                                    <router-link type="button" class="btn btn-outline-warning"
+                                        :to="{ name: 'configuracao-formulario-editar-view', query: { id: item.id, form: 'editar' } }">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </router-link>
+                                </div>
                             </th>
                         </tr>
                     </tbody>
@@ -54,6 +49,34 @@
 
 <script lang="ts">
 
+import { defineComponent } from 'vue';
+
+import { Configuracao } from '@/model/configuracao';
+import configuracaoClient from '@/client/configuracao.client';
+
+
+export default defineComponent({
+    name: 'ConfiguracaoLista',
+    data() {
+        return {
+            configuracaoList: new Array<Configuracao>()
+        }
+    },
+    mounted() {
+        this.findAll();
+    },
+    methods: {
+        findAll(){
+            configuracaoClient.listAll()
+                .then(sucess => {
+                    this.configuracaoList = sucess;                    
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+    }
+});
 </script>
 
 <style lang="scss">

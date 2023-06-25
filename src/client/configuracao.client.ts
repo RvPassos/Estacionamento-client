@@ -4,7 +4,7 @@ import { Configuracao } from "@/model/configuracao";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
 
-export class ConfiguracaoClient {
+class ConfiguracaoClient {
     
     private axiosClient : AxiosInstance
 
@@ -23,17 +23,25 @@ export class ConfiguracaoClient {
         }
     }
 
-    public async cadastrar(configuracao : Configuracao) : Promise<void> {
+    public async listAll() : Promise<Configuracao[]> {
         try {
-            return (await this.axiosClient.post('/', configuracao))
+            return (await this.axiosClient.get<Configuracao[]>(`/lista`)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
     }
 
-    public async editar(configuracao : Configuracao) : Promise<void> {
+    public async cadastrar(configuracao : Configuracao) : Promise<string> {
         try {
-            return (await this.axiosClient.put(`/${configuracao.id}`, configuracao)).data
+            return (await this.axiosClient.post<string>('', configuracao)).data
+        } catch (error : any) {
+            return Promise.reject(error.response)
+        }
+    }
+
+    public async editar(id: number, configuracao : Configuracao) : Promise<string> {
+        try {
+            return (await this.axiosClient.put<string>(`/${id}`, configuracao)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
@@ -53,3 +61,5 @@ export class ConfiguracaoClient {
         } 
     }
 }
+
+export default new ConfiguracaoClient();

@@ -4,7 +4,7 @@ import { Condutor } from "@/model/condutor";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
 
-export class CondutorClient {
+class CondutorClient {
 
     private axiosClient : AxiosInstance;
 
@@ -39,26 +39,26 @@ export class CondutorClient {
         }
     }
 
-    public async cadastrar(condutor : Condutor) : Promise<void> {
+    public async cadastrar(condutor : Condutor) : Promise<string> {
         try {
-            return (await this.axiosClient.post('/', condutor))
+            return (await this.axiosClient.post<string>('', condutor)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
 
     }
 
-    public async editar(condutor : Condutor) : Promise<void> {
+    public async editar(id : number, condutor : Condutor) : Promise<string> {
         try {
-            return (await this.axiosClient.put(`/${condutor.id}`, condutor)).data
+            return (await this.axiosClient.put<string>(`/${id}`, condutor)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
     }
 
-    public async deletar(condutor : Condutor) : Promise<string> {
+    public async deletar(id : number) : Promise<string> {
         try {
-            return (await this.axiosClient.delete(`/${condutor.id}`)).data
+            return (await this.axiosClient.delete(`/${id}`)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
@@ -79,3 +79,5 @@ export class CondutorClient {
     
     } 
 }
+
+export default new CondutorClient()

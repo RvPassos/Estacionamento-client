@@ -4,7 +4,7 @@ import { Modelo } from "@/model/modelo";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
 
-export class ModeloClient { 
+class ModeloClient { 
 
     private axiosClient : AxiosInstance;
 
@@ -39,19 +39,27 @@ export class ModeloClient {
         }
     }
 
-    public async cadastrar(modelo : Modelo) : Promise<void> {
+    public async cadastrar(modelo : Modelo) : Promise<string> {
         try {
-            return (await this.axiosClient.post('/', modelo))
+            return (await this.axiosClient.post<string>('', modelo)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
     }
 
-    public async editar(modelo : Modelo) : Promise<void> {
+    public async editar(id : Number, modelo : Modelo) : Promise<string> {
         try {
-            return (await this.axiosClient.put(`/${modelo.id}`, modelo)).data
+            return (await this.axiosClient.put<string>(`/${id}`, modelo)).data
         } catch (error : any) {
             return Promise.reject(error.response)
+        }
+    }
+
+    public async deletar(id : number) : Promise<void> {
+        try {
+            return (await this.axiosClient.delete(`/${id}`)).data
+        } catch (error: any) {
+            return Promise.reject(error. response)
         }
     }
 
@@ -67,5 +75,7 @@ export class ModeloClient {
         } catch (error : any) {
             return Promise.reject(error.response)
         }
-    } 
+    }
+    
 }
+export default new ModeloClient();

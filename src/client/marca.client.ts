@@ -4,7 +4,7 @@ import { Marca } from "@/model/marca";
 import { PageRequest } from "@/model/page/page-request";
 import { PageResponse } from "@/model/page/page-response";
 
-export class MarcaClient {
+class MarcaClient {
     
     private axiosClient : AxiosInstance
 
@@ -39,25 +39,25 @@ export class MarcaClient {
         }
     }
 
-    public async cadastrar(marca : Marca) : Promise<void> {
+    public async cadastrar(marca : Marca) : Promise<string> {
         try {
-            return (await this.axiosClient.post('/', marca))
+            return (await this.axiosClient.post<string>('', marca)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
     }
 
-    public async editar(marca : Marca) : Promise<void> {
+    public async editar(id : number, marca : Marca) : Promise<string> {
         try {
-            return (await this.axiosClient.post(`/${marca.id}`, marca)).data
+            return (await this.axiosClient.put<string>(`/${id}`, marca)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
     }
 
-    public async deletar(marca : Marca) : Promise<string> {
+    public async deletar(id : number) : Promise<void> {
         try {
-            return (await this.axiosClient.delete(`/${marca.id}`)).data
+            return (await this.axiosClient.delete(`/${id}`)).data
         } catch (error : any) {
             return Promise.reject(error.response)
         }
@@ -77,3 +77,5 @@ export class MarcaClient {
         }
     }
 }
+
+export default new MarcaClient();

@@ -1,38 +1,47 @@
 <template>
-    <div class="container">
-        <h2 class="mt-3">Listar Condutores</h2>
-        <div class="mt-5">
-            <div class="container text-end">
-                <router-link to="/forms-condutor">
-                    <button class="btn btn-primary" type="button">Cadastrar</button>
-                </router-link>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-10 text-start">
+                <h2 class="fs-3">Listar Condutor</h2>
             </div>
-            <div class="container text-center">
+            <div class="col-md-2 d-grid gap-2">
+                <router-link to="/condutor/formulario" type="button" class="btn btn-primary">Cadastrar</router-link>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <table class="table table-sm table-dark mt-4">
-                    <thead class="text-menor">
-                        <tr>
-                            <th>#</th>
-                            <th>Ativo</th>
-                            <th>Nome</th>
-                            <th>Cpf</th>
-                            <th>Telefone</th>
-                            <th>Tempo Pago</th>
-                            <th>Tempo Desconto</th>
-                            <th>Ações</th>
+                    <thead>
+                        <tr class="text-menor">
+                            <th scope="col">#</th>
+                            <th scope="col">Ativo</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Cpf</th>
+                            <th scope="col">Telefone</th>
+                            <th scope="col">Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>true</td>
-                            <td>João</td>
-                            <td>121.121.121-11</td>
-                            <td>+55(84)99189-1111</td>
-                            <td>00:00:00</td>
-                            <td>00:00:00</td>
-                            <th class="d-flex align-items-center justify-content-center gap-2">
-                                <button class="btn btn-outline-danger "><i class="bi bi-trash-fill"></i></button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-pencil-fill "></i></button>
+                    <tbody class="table-group-divider">
+                        <tr v-for="item in condutorList" :key="item.id">
+                            <td> {{ item.id }} </td>
+                            <td>
+                                <span v-if="item.ativo" class="badge text-bg-success"> Ativo </span>
+                                <span v-if="!item.ativo" class="badge text-bg-danger"> Inativo </span>
+                            </td>
+                            <td> {{ item.nome }}</td>
+                            <td> {{ item.cpf}}</td>
+                            <td>{{ item.telefone}}</td>
+                            <th class="col-md-2">
+                                <div>
+                                    <router-link type="button" class="btn btn-outline-warning"
+                                        :to="{ name: 'condutor-formulario-editar-view', query: { id: item.id, form: 'editar' } }">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </router-link>
+                                    <router-link type="button" class="btn btn-outline-danger ms-3"
+                                        :to="{ name: 'condutor-formulario-excluir-view', query: { id: item.id, form: 'excluir' } }">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </router-link>
+                                </div>
                             </th>
                         </tr>
                     </tbody>
@@ -43,6 +52,33 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
+
+import  condutorClient  from '@/client/condutor.client';
+import { Condutor } from '@/model/condutor';
+
+export default defineComponent({
+    name: 'ModeloLista',
+    data(){
+        return {
+            condutorList: new Array<Condutor>()
+        }
+    },
+    mounted() {
+        this.findAll();
+    },
+    methods: {
+        findAll() {
+            condutorClient.listAll()
+                .then(sucess => {
+                    this.condutorList = sucess;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+});
 
 </script>
 

@@ -3,12 +3,12 @@
     <div class="container-fluid">
       <ul class="navbar-nav">
         <li class="nav-item"><router-link to="/" class="router-link-nav">Home</router-link></li>
-        <li class="nav-item"><router-link to="/listar-marca" class="router-link-nav">Marca</router-link></li>
-        <li class="nav-item"><router-link to="/listar-modelo" class="router-link-nav">Modelo</router-link></li>
-        <li class="nav-item"><router-link to="/listar-veiculo" class="router-link-nav">Veiculo</router-link></li>
-        <li class="nav-item"><router-link to="/listar-condutor" class="router-link-nav">Condutor</router-link></li>
-        <li class="nav-item"><router-link to="/listar-movimentacao" class="router-link-nav">Movimentação</router-link></li>
-        <li class="nav-item"><router-link to="/listar-configuracao" class="router-link-nav">Configuração</router-link></li>
+        <li class="nav-item"><router-link to="/marca/lista" class="router-link-nav">Marca</router-link></li>
+        <li class="nav-item"><router-link to="/modelo/lista" class="router-link-nav">Modelo</router-link></li>
+        <li class="nav-item"><router-link to="/veiculo/lista" class="router-link-nav">Veiculo</router-link></li>
+        <li class="nav-item"><router-link to="/condutor/lista" class="router-link-nav">Condutor</router-link></li>
+        <li class="nav-item"><router-link to="/movimentacao/lista" class="router-link-nav">Movimentação</router-link></li>
+        <li class="nav-item"><router-link to="/configuracao/lista" class="router-link-nav">Configuração</router-link></li>
       </ul>
     </div>
   </nav>

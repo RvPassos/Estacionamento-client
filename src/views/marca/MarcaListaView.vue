@@ -1,34 +1,48 @@
 <template>
-    <div class="container">
-        <h2 class="mt-3">Listar Marcas</h2>
-        <div class="mt-5">
-            <div class="container text-end">
-                <router-link to="/forms-marca">
-                    <button class="btn btn-primary" type="button">Cadastrar</button>
-                </router-link>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-10 text-start">
+                <h2 class="fs-3">Listar Marcas</h2>
             </div>
-            <div class="container text-center">
+            <div class="col-md-2 d-grid gap-2">
+                <router-link to="/marca/formulario" type="button" class="btn btn-primary">Cadastrar</router-link>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <table class="table table-sm table-dark mt-4">
-                    <thead class="text-menor">
-                        <tr>
-                            <th>#</th>
-                            <th>Ativo</th>
-                            <th>Nome</th>
-                            <th>Ações</th>
+                    <thead>
+                        <tr class="text-menor">
+                            <th scope="col">#</th>
+                            <th scope="col">Ativo</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>true</td>
-                            <td>Fiat</td>
-                            <th class="d-flex align-items-center justify-content-center gap-2">
-                                <button class="btn btn-outline-danger "><i class="bi bi-trash-fill"></i></button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-pencil-fill "></i></button>
+                    <tbody class="table-group-divider">
+                        <tr v-for="item in marcasList" :key="item.id">
+                            <td class="col-md-1"> {{ item.id }}</td>
+                            <td class="col-md-2">
+                                <span v-if="item.ativo" class="badge text-bg-success"> Ativo </span>
+                                <span v-if="!item.ativo" class="badge text-bg-danger"> Inativo </span>
+
+                            </td>
+                            <td class="col-md-3 text-center"> {{ item.nome }}</td>
+                            <th class="col-md-4">
+                                <div>
+                                    <router-link type="button" class="btn btn-outline-warning"
+                                        :to="{ name: 'marca-formulario-editar-view', query: { id: item.id, form: 'editar' } }">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </router-link>
+                                    <router-link type="button" class="btn btn-outline-danger ms-3"
+                                        :to="{ name: 'marca-formulario-excluir-view', query: { id: item.id, form: 'excluir' } }">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </router-link>
+                                </div>
                             </th>
                         </tr>
                     </tbody>
-                 </table>
+                </table>
             </div>
         </div>
     </div>
@@ -36,6 +50,34 @@
 
 <script lang="ts">
 
+import { defineComponent } from 'vue';
+
+import MarcaClient from '@/client/marca.client';
+import { Marca } from '@/model/marca';
+
+export default defineComponent({
+    name: 'MarcaLista',
+    data() {
+        return {
+            marcasList: new Array<Marca>()
+        }
+    },
+    mounted() {
+        this.findAll();
+    },
+    methods: {
+
+        findAll() {
+            MarcaClient.listAll()
+                .then(sucess => {
+                    this.marcasList = sucess;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+});
 </script>
 
 <style lang="scss">
